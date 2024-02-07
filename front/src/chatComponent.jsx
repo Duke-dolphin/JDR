@@ -17,7 +17,7 @@ const ChatComponent = () => {
       setChatHistory([...chatHistory, data]);
       console.log("Updated History:", updatedHistory);
     });
-    fetch("http://localhost:3000/chatHistory");
+    fetch("http://localhost:3000/chat");
   }, [chatHistory]);
 
   const sendMessage = () => {
