@@ -17,7 +17,20 @@ const ChatComponent = () => {
       setChatHistory([...chatHistory, data]);
       console.log("Updated History:", updatedHistory);
     });
-    fetch("http://localhost:3000/chat");
+    // fetch("http://localhost:3000/chat");
+    fetch("http://localhost:3000/authenticate/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+      body: JSON.stringify({
+        email: "nicolas.dolphens@gmail.com",
+        username: "elithril",
+        password: "test123",
+      }),
+    })
+      .then((res) => console.log("success =>", res))
+      .catch((err) => console.log("failed =>", err));
   }, [chatHistory]);
 
   const sendMessage = () => {
