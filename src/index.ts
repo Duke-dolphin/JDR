@@ -49,15 +49,7 @@ app.options("*", cors(options));
 
 app.use(authMiddleware.loggerMiddleware);
 
-app.get("/", (_req: Request, res: Response) => {
-  return res.send("Express Typescript on Vercel");
-});
-
 app.use("/", routes);
-
-routes.get("/", (_req: Request, res: Response) => {
-  return res.send("Express Typescript on Vercel");
-});
 
 app.use(function notFoundHandler(_req, res: ExResponse) {
   res.status(404).send({
@@ -87,7 +79,7 @@ const io = new Server(server, {
 socketConnect(io);
 
 // Start the Express server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Express server running at http://localhost:${port}`);
 });
 

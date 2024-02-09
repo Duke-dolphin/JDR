@@ -18,11 +18,11 @@ const AuthMiddleware_1 = __importDefault(require("./middlewares/AuthMiddleware")
 const routes_1 = require("./routes");
 // Initialize the Express application
 const app = (0, express_1.default)();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const authMiddleware = new AuthMiddleware_1.default();
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
-//options for cors midddleware
+// options for cors midddleware
 const options = {
     allowedHeaders: [
         "Origin",
@@ -36,9 +36,9 @@ const options = {
     origin: "*",
     preflightContinue: false,
 };
-//use cors middleware
+// use cors middleware
 app.use((0, cors_1.default)(options));
-//enable pre-flight
+// enable pre-flight
 // @ts-ignore
 app.options("*", (0, cors_1.default)(options));
 app.use(authMiddleware.loggerMiddleware);
@@ -65,7 +65,19 @@ const io = new socket_io_1.Server(server, {
 });
 (0, init_1.default)(io);
 // Start the Express server
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Express server running at http://localhost:${port}`);
 });
+// import express, { Request, Response } from "express";
+// const app = express();
+// const port = process.env.PORT || 8080;
+// app.get("/", (_req: Request, res: Response) => {
+//   return res.send("Express Typescript on Vercel");
+// });
+// app.get("/ping", (_req: Request, res: Response) => {
+//   return res.send("pong 🏓");
+// });
+// app.listen(port, () => {
+//   return console.log(`Server is listening on ${port}`);
+// });
 //# sourceMappingURL=index.js.map
