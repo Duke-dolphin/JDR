@@ -22,11 +22,13 @@ export class AuthService {
     return await compare(loginParams.password, user.password);
   }
 
-  async createUser(userCreation: userCreation): Promise<User> {
+  async getUser(loginParams: loginParams): Promise<User> {
+    return await this.authRepository.getUser(loginParams.email);
+  }
+
+  async createUser(userCreation: userCreation): Promise<User | string | any> {
     const userExist = await this.authRepository.isUserExist(userCreation.email);
-    // renvoyer le user et s'il existe gérer le cas dans le try
-    // plus propre que throw
-    if (userExist) throw "exist";
+    if (userExist) return "found";
     const user = await this.authRepository.createUser(
       userCreation.email,
       userCreation.password,

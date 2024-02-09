@@ -6,11 +6,13 @@ import {
   Route,
   SuccessResponse,
   Response,
+  Middlewares,
 } from "tsoa";
 import { User } from "../database/models/UserSchema";
 import { AuthService } from "../services/AuthService";
 import express from "express";
-// import createSecretToken from "../helpers/secretToken";
+import userVerification from "../middlewares/AuthMiddleware";
+import createSecretToken from "../helpers/secretToken";
 
 export interface userCreation {
   email: string;
@@ -34,6 +36,7 @@ export class AuthController extends Controller {
 
   @SuccessResponse("201", "OK")
   @Post("login")
+  // @Middlewares(userVerification)
   public async login(
     @Request() request: express.Request,
     @Body() loginParams: loginParams
@@ -47,17 +50,13 @@ export class AuthController extends Controller {
         return response.json({ message: "Incorrect password or email" });
       }
       // generate auth cookie
-
-      // const token = createSecretToken(user._id);
-      // response.cookie("token", token, {
-      //   httpOnly: true,
-      // });
+      const user = await this.authService.getUser(loginParams);
+      const token = createSecretToken(user._id);
+      response.cookie("token", token, {
+        httpOnly: true,
+      });
     } catch (error) {
-      if (error === "wrongCredentials") {
-        this.setStatus(401);
-        // response.status(401);
-        // return response.json({message: "Wrong credentials"})
-      } else this.setStatus(500);
+      response.status(500);
       return error;
     }
   }
@@ -67,28 +66,26 @@ export class AuthController extends Controller {
   public async createUser(
     @Request() request: express.Request,
     @Body() userParams: userCreation
-  ): Promise<User | string> {
+  ): Promise<User | string | any> {
+    const response = (<any>request).res as express.Response;
     try {
-      this.setStatus(201);
+      response.status(201);
       const user = await this.authService.createUser(userParams);
-
+      if (user === "found") {
+        response.status(302);
+        return response.json({ message: "User already exist" });
+      }
       // generate auth cookie
+      const token = createSecretToken(user._id);
+      response.cookie("token", token, {
+        httpOnly: true,
+      });
 
-      // const response = (<any>request).res as express.Response;
-      // const token = createSecretToken(user._id);
-      // response.cookie("token", token, {
-      //   httpOnly: true,
-      // });
       return user;
     } catch (error) {
       // gérer le cas d'exist dnas le try comme pour login
-      if (error === "exist") {
-        this.setStatus(302);
-        return "User already exist";
-      } else {
-        this.setStatus(500);
-        return error;
-      }
+      response.status(500);
+      return error;
     }
   }
 }
