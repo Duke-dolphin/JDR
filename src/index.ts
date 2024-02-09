@@ -15,6 +15,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import AuthMiddleware from "./middlewares/AuthMiddleware";
 import { routes } from "./routes";
+import { Request, Response } from "express";
 
 // Initialize the Express application
 const app: Application = express();
@@ -48,7 +49,11 @@ app.options("*", cors(options));
 
 app.use(authMiddleware.loggerMiddleware);
 
-app.use("/", routes);
+app.use("/", (_req: Request, res: Response) => {
+  return res.send("Express Typescript on Vercel");
+});
+
+// app.use("/", routes);
 
 app.use(function notFoundHandler(_req, res: ExResponse) {
   res.status(404).send({
