@@ -1,7 +1,6 @@
 {
-  "name": "chat-app",
+  "name": "jdr-back",
   "version": "1.0.0",
-  "description": "a chat application",
   "main": "index.ts",
   "scripts": {
     "start": "nodemon src/index.ts",
