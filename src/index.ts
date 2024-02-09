@@ -20,34 +20,34 @@ import { Request, Response } from "express";
 // Initialize the Express application
 const app: Application = express();
 const port = process.env.PORT || 3000;
-const authMiddleware = new AuthMiddleware();
+// const authMiddleware = new AuthMiddleware();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
 
 //options for cors midddleware
-const options: cors.CorsOptions = {
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "X-Access-Token",
-  ],
-  credentials: true,
-  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  origin: "*",
-  preflightContinue: false,
-};
+// const options: cors.CorsOptions = {
+//   allowedHeaders: [
+//     "Origin",
+//     "X-Requested-With",
+//     "Content-Type",
+//     "Accept",
+//     "X-Access-Token",
+//   ],
+//   credentials: true,
+//   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+//   origin: "*",
+//   preflightContinue: false,
+// };
 
 //use cors middleware
-app.use(cors(options));
+// app.use(cors(options));
 
 //enable pre-flight
 // @ts-ignore
-app.options("*", cors(options));
+// app.options("*", cors(options));
 
-app.use(authMiddleware.loggerMiddleware);
+// app.use(authMiddleware.loggerMiddleware);
 
 app.use("/", (_req: Request, res: Response) => {
   return res.send("Express Typescript on Vercel");
@@ -55,13 +55,13 @@ app.use("/", (_req: Request, res: Response) => {
 
 // app.use("/", routes);
 
-app.use(function notFoundHandler(_req, res: ExResponse) {
-  res.status(404).send({
-    message: "Not Found",
-  });
-});
+// app.use(function notFoundHandler(_req, res: ExResponse) {
+//   res.status(404).send({
+//     message: "Not Found",
+//   });
+// });
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
 // used to serve static files
 // now this will work => http://localhost:3000/images/kitten.jpg
