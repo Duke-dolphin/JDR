@@ -55,6 +55,10 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/", routes);
 
+routes.get("/", (_req: Request, res: Response) => {
+  return res.send("Express Typescript on Vercel");
+});
+
 app.use(function notFoundHandler(_req, res: ExResponse) {
   res.status(404).send({
     message: "Not Found",
