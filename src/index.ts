@@ -18,7 +18,7 @@ import { routes } from "./routes";
 
 // Initialize the Express application
 const app: Application = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const authMiddleware = new AuthMiddleware();
 
 app.use(bodyParser.urlencoded({ extended: true }));
