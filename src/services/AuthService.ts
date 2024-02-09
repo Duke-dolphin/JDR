@@ -17,13 +17,14 @@ export class AuthService {
     return this.instance;
   }
 
-  async isUserAuthentified(loginParams: loginParams): Promise<boolean> {
-    const user = await this.authRepository.getUser(loginParams.email);
-    return await compare(loginParams.password, user.password);
+  async isUserAuthentified(email: string, password: string): Promise<boolean> {
+    const user = await this.authRepository.getUser(email);
+    if (!user) return null;
+    return await compare(password, user.password);
   }
 
-  async getUser(loginParams: loginParams): Promise<User> {
-    return await this.authRepository.getUser(loginParams.email);
+  async getUser(email: string): Promise<User> {
+    return await this.authRepository.getUser(email);
   }
 
   async createUser(userCreation: userCreation): Promise<User | string | any> {

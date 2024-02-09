@@ -13,24 +13,16 @@ import { Server } from "socket.io";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import swaggerUi from "swagger-ui-express";
-import * as swaggerJson from "../dist/swagger.json";
-import { RegisterRoutes } from "../dist/routes";
-import { ValidateError } from "tsoa";
-// import path from "node:path";
+import AuthMiddleware from "./middlewares/AuthMiddleware";
+import { routes } from "./routes";
 
 // Initialize the Express application
 const app: Application = express();
 const port = process.env.PORT;
+const authMiddleware = new AuthMiddleware();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use(
-  ["/openapi", "/docs", "/swagger"],
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerJson)
-);
 
 //options for cors midddleware
 const options: cors.CorsOptions = {
@@ -53,7 +45,10 @@ app.use(cors(options));
 //enable pre-flight
 // @ts-ignore
 app.options("*", cors(options));
-RegisterRoutes(app);
+
+app.use(authMiddleware.loggerMiddleware);
+
+app.use("/", routes);
 
 app.use(function notFoundHandler(_req, res: ExResponse) {
   res.status(404).send({
@@ -62,28 +57,6 @@ app.use(function notFoundHandler(_req, res: ExResponse) {
 });
 
 app.use(cookieParser());
-
-app.use(function errorHandler(
-  err: unknown,
-  req: ExRequest,
-  res: ExResponse,
-  next: NextFunction
-): ExResponse | void {
-  if (err instanceof ValidateError) {
-    console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
-    return res.status(422).json({
-      message: "Validation Failed",
-      details: err?.fields,
-    });
-  }
-  if (err instanceof Error) {
-    return res.status(500).json({
-      message: "Internal Server Error",
-    });
-  }
-
-  next();
-});
 
 // used to serve static files
 // now this will work => http://localhost:3000/images/kitten.jpg
