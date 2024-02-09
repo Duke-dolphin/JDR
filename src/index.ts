@@ -67,22 +67,22 @@ app.use(cookieParser());
 // now this will work => http://localhost:3000/images/kitten.jpg
 // app.use(express.static(path.join(__dirname, "public")));
 
-const server = createServer(app);
-console.info("Initialize database");
-const db = process.env.MONGO_SRC ?? "whatever default";
-connect({ db });
+// const server = createServer(app);
+// console.info("Initialize database");
+// const db = process.env.MONGO_SRC ?? "whatever default";
+// connect({ db });
 
-console.info("initialize socket server");
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+// console.info("initialize socket server");
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-socketConnect(io);
+// socketConnect(io);
 
 // Start the Express server
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Express server running at http://localhost:${port}`);
 });
