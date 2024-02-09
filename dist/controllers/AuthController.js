@@ -36,6 +36,8 @@ class AuthController {
                 const token = (0, secretToken_1.default)(user._id);
                 response.cookie("token", token, {
                     httpOnly: true,
+                    sameSite: "none",
+                    secure: true,
                 });
                 return response.json({ message: "Connected" });
             }
@@ -58,6 +60,8 @@ class AuthController {
                 const token = (0, secretToken_1.default)(user._id);
                 response.cookie("token", token, {
                     httpOnly: true,
+                    sameSite: "none",
+                    secure: true,
                 });
                 return response.json({ message: "User created", user });
             }

@@ -65,7 +65,7 @@ const io = new socket_io_1.Server(server, {
 });
 (0, init_1.default)(io);
 // Start the Express server
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Express server running at http://localhost:${port}`);
 });
 // import express, { Request, Response } from "express";

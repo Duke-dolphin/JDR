@@ -36,11 +36,13 @@ export class AuthController {
         return response.json({ message: "Incorrect password or email" });
       }
       // generate auth cookie
-      // const user = await this.authService.getUser(email);
-      // const token = createSecretToken(user._id);
-      // response.cookie("token", token, {
-      //   httpOnly: true,
-      // });
+      const user = await this.authService.getUser(email);
+      const token = createSecretToken(user._id);
+      response.cookie("token", token, {
+        httpOnly: false,
+        sameSite: "none",
+        secure: true,
+      });
       return response.json({ message: "Connected" });
     } catch (error) {
       response.status(500);
@@ -62,7 +64,9 @@ export class AuthController {
       // generate auth cookie
       const token = createSecretToken(user._id);
       response.cookie("token", token, {
-        httpOnly: true,
+        httpOnly: false,
+        sameSite: "none",
+        secure: true,
       });
       return response.json({ message: "User created", user });
     } catch (error) {
