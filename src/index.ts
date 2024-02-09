@@ -49,7 +49,7 @@ const port = process.env.PORT || 3000;
 
 // app.use(authMiddleware.loggerMiddleware);
 
-app.use("/", (_req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
   return res.send("Express Typescript on Vercel");
 });
 
