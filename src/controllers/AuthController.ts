@@ -36,11 +36,11 @@ export class AuthController {
         return response.json({ message: "Incorrect password or email" });
       }
       // generate auth cookie
-      const user = await this.authService.getUser(email);
-      const token = createSecretToken(user._id);
-      response.cookie("token", token, {
-        httpOnly: true,
-      });
+      // const user = await this.authService.getUser(email);
+      // const token = createSecretToken(user._id);
+      // response.cookie("token", token, {
+      //   httpOnly: true,
+      // });
       return response.json({ message: "Connected" });
     } catch (error) {
       response.status(500);
