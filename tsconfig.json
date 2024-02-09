@@ -9,7 +9,7 @@
     ] /* Specify library files to be included in the compilation. */,
     "allowJs": true /* Allow javascript files to be compiled. */,
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
-    "outDir": "./dist" /* Redirect output structure to the directory. */,
+    "outDir": "." /* Redirect output structure to the directory. */,
 
     /* Strict Type-Checking Options */
     "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
